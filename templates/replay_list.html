@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>리플레이 목록</title>
+    <link rel="stylesheet" href="/static/css/layout.css">
+    <style>
+        .container {
+            width: 820px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: content-box;
+            margin: 8px auto;
+            cursor: pointer;
+        }
+
+        .label-left,
+        .label-right {
+            font-size: 16px;
+            width: 108px;
+            flex-shrink: 0;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .box-list-left,
+        .box-list-right {
+            display: flex;
+            flex: 1;
+        }
+
+        .box-list-left {
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .box-list-right {
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .status-boxes {
+            width: 288px;
+            display: flex;
+        }
+
+        .status-box {
+            width: 64px;
+            height: 64px;
+            border: 4px solid #000;
+            box-sizing: content-box;
+        }
+
+        .status-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="/home">
+        <img src="/static/images/templates/logo.png" alt="logo" class="logo">
+    </a>
+</header>
+
+<div class="layout">
+
+    <aside class="left"></aside>
+
+    <main>
+        {% if error_message %}
+            <p style="color: red;">{{ error_message }}</p>
+        {% endif %}
+
+        {% if replays %}
+            {% for replay in replays %}
+            <div class="container" onclick="location.href='/replay?match_id={{ replay.replay_id }}'">
+                <div class="box-list-left"
+                     {% if replay.winner_player_side == 1 %} style="background-color: green"
+                     {% elif replay.winner_player_side == 2 %} style="background-color: red"
+                     {% else %} style="background-color: yellow"
+                     {% endif %}>
+                    <div class="label-left">{{ replay.player1_nickname }}</div>
+                    <div class="status-boxes">
+                        <div class="status-box">
+                            <img src="static/images/cards/{{ replay.player1_cards[0].card_with_last_patch.card.image_file }}"
+                                 alt="{{ replay.player1_cards[0].card_with_last_patch.card.image_file }}">
+                        </div>
+                        <div class="status-box">
+                            <img src="static/images/cards/{{ replay.player1_cards[1].card_with_last_patch.card.image_file }}"
+                                 alt="{{ replay.player1_cards[1].card_with_last_patch.card.image_file }}">
+                        </div>
+                        <div class="status-box">
+                            <img src="static/images/cards/{{ replay.player1_cards[2].card_with_last_patch.card.image_file }}"
+                                 alt="{{ replay.player1_cards[2].card_with_last_patch.card.image_file }}">
+                        </div>
+                        <div class="status-box">
+                            <img src="static/images/cards/{{ replay.player1_cards[3].card_with_last_patch.card.image_file }}"
+                                 alt="{{ replay.player1_cards[3].card_with_last_patch.card.image_file }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box-list-right"
+                     {% if replay.winner_player_side == 1 %} style="background-color: red"
+                     {% elif replay.winner_player_side == 2 %} style="background-color: green"
+                     {% else %} style="background-color: yellow"
+                     {% endif %}>
+                    <div class="status-boxes">
+                        <div class="status-box">
+                            <img src="static/images/cards/{{ replay.player2_cards[0].card_with_last_patch.card.image_file }}"
+                                 alt="{{ replay.player2_cards[0].card_with_last_patch.card.image_file }}">
+                        </div>
+                        <div class="status-box">
+                            <img src="static/images/cards/{{ replay.player2_cards[1].card_with_last_patch.card.image_file }}"
+                                 alt="{{ replay.player2_cards[1].card_with_last_patch.card.image_file }}">
+                        </div>
+                        <div class="status-box">
+                            <img src="static/images/cards/{{ replay.player2_cards[2].card_with_last_patch.card.image_file }}"
+                                 alt="{{ replay.player2_cards[2].card_with_last_patch.card.image_file }}">
+                        </div>
+                        <div class="status-box">
+                            <img src="static/images/cards/{{ replay.player2_cards[3].card_with_last_patch.card.image_file }}"
+                                 alt="{{ replay.player2_cards[3].card_with_last_patch.card.image_file }}">
+                        </div>
+                    </div>
+                    <div class="label-right">{{ replay.player2_nickname }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </main>
+
+    <aside class="right"></aside>
+
+</div>
+
+<footer></footer>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+config.py 
+__pycache__/
+*.pyc
+*.xml
+test.py
+.idea/
+examples/
+.vscode/
+.DS_Store
+logs/
+flask_session/

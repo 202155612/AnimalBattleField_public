@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>홈페이지</title>
+    <link rel="stylesheet" href="/static/css/layout.css">
+
+    <style>
+
+        .menu-grid {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .menu-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 220px;
+            text-decoration: none;
+            font-size: 32px;
+            font-weight: bold;
+            color: #000;
+            transition: transform 0.1s ease-in-out;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card1 { background: #ff7070; }
+        .card2 { background: #ffc933; }
+        .card3 { background: #fff933; }
+        .card4 { background: #b6ff3b; }
+        .card5 { background: #7896d9; }
+        .card6 { background: #9ee7ff; }
+        .card7 { background: #ff9bff; }
+        .card8 { background: #cccccc; }
+        .card9 { background: #ffb347; }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="/home">
+        <img src="/static/images/templates/logo.png" alt="logo" class="logo">
+    </a>
+</header>
+
+<div class="layout">
+
+    <aside class="left"></aside>
+
+    <main>
+        {% if error_message %}
+            <p style="color: red;">{{ error_message }}</p>
+        {% endif %}
+
+        {% if not account %}
+            <h1>로그인 해주세요.</h1>
+        {% else %}
+            <h1>환영합니다. {{ account.username }}님.</h1>
+        {% endif %}
+        
+
+        <div class="menu-grid">
+            <a href="/card_list" class="menu-card card1">카드 목록</a>
+            <a href="/card_stat_list" class="menu-card card2">카드 통계</a>
+            <a href="/replay_list" class="menu-card card3">리플레이</a>
+            <a href="/patch_list" class="menu-card card4">카드 패치 목록</a>
+        {% if not account %}
+            <a href="/login" class="menu-card card5">로그인하기</a>
+            <a href="/register" class="menu-card card6">가입하기</a>
+
+        {% else %}
+                <a href="/account" class="menu-card card5">회원정보</a>
+                <a href="/deck_list" class="menu-card card6">덱 목록</a>
+                <a href="/choose_deck" class="menu-card card7">무작위 매치</a>
+
+                {% if account.role %}
+                    {% if "developer" in account.role %}
+                        <a href="/card_patch" class="menu-card card8">카드 패치</a>
+                    {% elif "administrator" in account.role %}
+                        <a href="/admin" class="menu-card card8">관리자</a>
+                    {% endif %}
+                {% endif %}
+
+                <form action="/logout" method="post" style="display: contents;">
+                    <button type="submit" class="menu-card card9" style="border:none; cursor:pointer;">
+                        로그아웃
+                    </button>
+                </form>
+        {% endif %}
+            </div>
+
+    </main>
+
+    <aside class="right"></aside>
+
+</div>
+
+<footer>
+</footer>
+
+</body>
+</html>

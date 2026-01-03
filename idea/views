@@ -1,0 +1,90 @@
+카드 정보 조회
+덱 조회
+매치 조회
+카드 통계 조회
+계정 정보 조회
+
+
+Accounts(user_ID, username, nickname, created_at)
+Notifications(notification_ID, user_ID, message, is_read, created_at)
+Cards(card_ID, name, description, cost, attack, health, image_file, is_active)
+Abilities(ability_ID, name, description, image_file)
+Card_Abilities(card_ID, ability_ID)
+Decks(deck_ID, name, user_ID, is_complete, is_defense_deck)
+DeckCards(deck_ID, slot, card_ID)
+CardPatches(patch_ID, card_ID, before, after, changed_at, patch_user_ID)
+Matches(match_ID, player1_ID, player2_ID, winner_player_side, last_patch_ID, matched_at)
+MatchStates(state_ID, match_ID, state_num, turn)
+MatchActions(action_ID, match_ID, action_num, turn, attack_side, attack_slot, target_slot, attacker_damage, target_damage, is_attacker_alive, is_target_alive, before_state_ID, after_state_ID)
+MatchCards(match_ID, side, slot, card_ID, last_patch_ID)
+MatchStateCards(state_ID, side, slot, card_ID, attack, health, is_dead)
+
+알림 확인: 로그인(조회)
+Notifications(message, is_read, created_at)
+
+리플레이 세부사항 확인: 비로그인(조회)
+Matches(winner_player_side, matched_at)
+Accounts(nickname)
+MatchStates(state_num, turn)
+MatchActions(action_num, turn, attack_side, attack_slot, target_slot, 
+attacker_damage, target_damage, is_attacker_alive, is_target_alive)
+MatchStateCards(side, slot, attack, health, is_dead)
+Cards(name, cost, attack, health, image_file, is_active)
+Abilities(name, description, image_file)
+
+리플레이 기록 목록 확인: 비로그인(조회)
+Matches(match_id, (winner_player_side에 따른 user_ID의 nickname), matched_at)
+Accounts(nickname)
+DeckCards(card_ID)
+Cards(image_file)
+
+덱 조회: 로그인(조회)
+Decks(name, is_complete, is_defense_deck)
+DeckCards(slot)
+Cards(name, cost, attack, health, image_file, is_active)
+Abilities(name, description, image_file)
+
+카드 정보: 비로그인(조회)
+Cards(card_ID, name, description, cost, attack, health, image_file, is_active),
+Abilities(ability_ID, name, description, image_file)
+
+카드 수정 조회: 비로그인(조회)
+Cards(card_ID, name, description, cost, attack, health, image_file, is_active),
+CardPatches(before, after, changed_at, patch_user_ID),
+Accounts(nickname)
+
+능력 조회: 비로그인(조회), 개발자(수정)
+Abilities(ability_ID, name, description, image_file)
+
+계정 정보 조회: 로그인(조회, 자신만)
+Accounts(username, nickname, created_at)
+
+
+매치 조회/추가 -> 비로그인(조회), 로그인(추가)
+matches, matchcards, match_states, matchactions, matchstatecards
+
+리플레이 목록 조회 -> 비로그인(조회)
+matches, accounts
+
+카드 통계 조회 -> 비로그인(조회):
+cards, cardpatches, matches, match_states, matchactions, matchstatecards
+
+계정 정보 조회 -> 로그인(조회, 수정):
+accounts
+
+어떤 카드의 픽률과 승률을 조회하려면?
+픽률: 카드가 포함된 플레이 수 / 전체 플레이 수
+승률: 카드가 포함된 플레이 중 승리한 플레이 수 / 카드가 포함된 플레이 수
+
+count(matchcards) where card_ID = x / 2 * count(matches)
+
+matchcards join matches 
+using match_id
+where matchcards.side = matches.winning_side
+and matchcards.card_ID = x
+/ count(matchcards) where card_ID = x
+
+
+
+
+

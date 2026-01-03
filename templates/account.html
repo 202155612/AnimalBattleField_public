@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원정보</title>
+    <link rel="stylesheet" href="/static/css/layout.css">
+    <style>
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .member-info {
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .member-info th,
+        .member-info td {
+            padding: 6px 12px;
+        }
+
+        .member-info th {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="/home">
+        <img src="/static/images/templates/logo.png" alt="logo" class="logo">
+    </a>
+</header>
+
+<div class="layout">
+
+    <aside class="left"></aside>
+
+    <main>
+        <div class="top-right-buttons">
+            <button type="button" onclick="location.href='/home'">🏠</button>
+        </div>
+        <h1>회원정보</h1>
+
+        <table class="member-info">
+            <tr>
+                <th>아이디</th>
+                <td>{{ username }}</td>
+            </tr>
+            <tr>
+                <th>닉네임</th>
+                <td>{{ nickname }}</td>
+            </tr>
+            <tr>
+                <th>등급</th>
+                <td>{{ role }}</td>
+            </tr>
+            <tr>
+                <th>가입일</th>
+                <td>{{ created_at }}</td>
+            </tr>
+        </table>
+    </main>
+
+    <aside class="right"></aside>
+
+</div>
+
+<footer>
+</footer>
+
+</body>
+</html>

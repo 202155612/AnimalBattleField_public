@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>어드민</title>
+    <link rel="stylesheet" href="/static/css/layout.css">
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .admin-section {
+            margin-bottom: 30px;
+        }
+
+        .search-form label {
+            display: inline-block;
+            width: 100px;
+            margin-top: 5px;
+        }
+
+        .search-form input,
+        .search-form select {
+            margin-bottom: 10px;
+        }
+
+        .user {
+            border: 1px solid #aaa;
+            padding: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .userdata p {
+            margin: 2px 0;
+        }
+
+        .nickname {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .username {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .created_at {
+            font-size: 11px;
+            color: #777;
+        }
+
+        .change_data input[type="text"] {
+            font-size: 14px;
+            padding: 3px;
+            margin-bottom: 5px;
+        }
+
+        .change_data input[type="submit"] {
+            font-size: 14px;
+            padding: 4px 8px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="/home">
+        <img src="/static/images/templates/logo.png" alt="logo" class="logo">
+    </a>
+</header>
+
+<div class="layout">
+
+    <aside class="left"></aside>
+
+    <main>
+
+        {% if error_message %}
+            <p style="color:red;">{{ error_message }}</p>
+        {% endif %}
+
+        <h1>어드민 전용 기능</h1>
+
+        <section class="admin-section">
+            <form action="/massive_battles" method="POST">
+                <label>패싸움 </label><input type="submit" value="가즈아!">
+            </form>
+        </section>
+
+        <section class="admin-section">
+            <h2>사용자 조회 및 닉네임 변경</h2>
+
+            <form class="search-form">
+                <label>유저명 검색</label><input name="search_username"><br>
+                <label>닉네임 검색</label><input name="search_nickname"><br>
+
+                <label>정렬 순서</label>
+                <select name="order">
+                    <option value="none">없음</option>
+                    <option value="by_username">유저명</option>
+                    <option value="by_nickname">닉네임</option>
+                    <option value="by_created_at">생성 시간</option>
+                </select>
+
+                <select name="desc">
+                    <option value="asc">오름차순</option>
+                    <option value="desc">내림차순</option>
+                </select>
+
+                <button type="submit">제출</button>
+            </form>
+        </section>
+
+        {% if accounts %}
+            {% for account in accounts %}
+                <div class="user">
+                    <div class="userdata">
+                        <p class="nickname">{{ account.nickname }}</p>
+                        <p class="username">{{ account.username }}</p>
+                        <p class="created_at">{{ account.created_at }}</p>
+                    </div>
+
+                    <form class="change_data" method="POST" action="/update_nickname">
+                        <input type="hidden" name="username" value="{{ account.username }}">
+                        <input type="text" name="new_nickname" placeholder="새 닉네임">
+                        <input type="submit" value="닉네임 변경">
+                    </form>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+    </main>
+
+    <aside class="right"></aside>
+
+</div>
+
+<footer>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="/static/css/layout.css">
+    <style>
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+
+        form table td {
+            padding: 6px 4px;
+        }
+
+        form input {
+            padding: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            margin-top: 12px;
+            padding: 8px 16px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="/home">
+        <img src="/static/images/templates/logo.png" alt="logo" class="logo">
+    </a>
+</header>
+
+<div class="layout">
+
+    <aside class="left"></aside>
+
+    <main>
+        <h1>회원가입</h1>
+
+        <form action="/register" method="post">
+            <table>
+                <tr>
+                    <td><label>아이디:</label></td>
+                    <td><input type="text" name="username"></td>
+                </tr>
+                <tr>
+                    <td><label>닉네임:</label></td>
+                    <td><input type="text" name="nickname"></td>
+                </tr>
+                <tr>
+                    <td><label>비밀번호:</label></td>
+                    <td><input type="password" name="password"></td>
+                </tr>
+            </table>
+
+            {% if error_message %}
+                <p style="color:red;">{{ error_message }}</p>
+            {% endif %}
+
+            <button type="submit">가입하기</button>
+        </form>
+    </main>
+
+    <aside class="right"></aside>
+
+</div>
+
+<footer></footer>
+
+</body>
+</html>

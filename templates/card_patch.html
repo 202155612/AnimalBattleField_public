@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>카드 수정</title>
+    <link rel="stylesheet" href="/static/css/layout.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .item {
+            background: #ddd;
+            padding: 40px;
+            display: inline-flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .emptyitem {
+            width: 160px;
+            height: 240px;
+        }
+
+        .form-row {
+            margin-bottom: 10px;
+        }
+
+        label {
+            margin-left: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 4px;
+            font-size: 14px;
+            width: 120px;
+        }
+
+        .top-form-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .top-form {
+            margin: 0;
+        }
+
+        .card-edit-container {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            margin-top: 20px;
+            width: 600px;
+        }
+
+        .card-edit-left,
+        .card-edit-right {
+            flex: 1;
+        }
+
+        .pleasehelpme {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="/home">
+            <img src="/static/images/templates/logo.png" alt="logo" class="logo">
+        </a>
+    </header>
+
+    <div class="layout">
+
+        <aside class="left"></aside>
+
+        <main>
+
+            {% if error_message %}
+            <p style="color: red;">{{ error_message }}</p>
+            {% endif %}
+
+            <div class="top-form-row">
+                <form method="GET" class="top-form">
+                    <select id="card_info_choice" name="card_info_choice">
+                        {% if card_infos and card_infos|length > 0 %}
+                        {% for card_info in card_infos %}
+                        <option value="{{ card_info.card_id }}">{{ card_info.name }}</option>
+                        {% endfor %}
+                        {% else %}
+                        <option disabled>카드 정보가 없습니다</option>
+                        {% endif %}
+                    </select>
+                    <label for="card_info_choice">카드 선택</label>
+                    <input type="submit" value="불러오기">
+                </form>
+
+                <form method="POST" action="/insert_card" class="top-form">
+                    <input type="submit" value="새 카드 생성">
+                </form>
+            </div>
+
+            {% if card %}
+            <h2>{{ card.card_name }}</h2>
+
+            <form method="POST" action="{{ url_for('card_patch.update_card', card_id=card.card_id) }}" class="pleasehelpme">
+
+                <input type="hidden" name="before_id" value="{{ card.card_id }}">
+
+                <div class="card-edit-container">
+                    <div class="card-edit-left">
+                        <div class="item">
+                            <card-image card='{{ card | tojson }}' size="1">
+                            </card-image>
+                        </div>
+
+                        <div class="form-row">
+                            <input name="new_card_name" type="text" value="{{ card.name }}">
+                            <label>카드 이름</label>
+                        </div>
+
+                        <div class="form-row">
+                            <input name="new_card_image_file" type="text" value="{{ card.image_file }}">
+                            <label>이미지 파일</label>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="checkbox" name="new_card_is_active" {% if card.is_active %} checked {% endif
+                                %}>
+                            <label>활성화 여부</label>
+                        </div>
+                    </div>
+
+                    <div class="card-edit-right">
+                        {% for ability in abilities %}
+                        <div class="form-row">
+                            <input type="checkbox" name="new_card_ability" value="{{ ability.ability_id }}" {% if
+                                ability.ability_id in ability_ids %} checked {% endif %}>
+                            <label>{{ ability.name }}</label>
+                        </div>
+                        {% endfor %}
+                        
+
+                        <div class="form-row">
+                            <input type="number" name="new_card_cost" value="{{ card.cost }}">
+                            <label>코스트</label>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="number" name="new_card_attack" value="{{ card.attack }}">
+                            <label>공격</label>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="number" name="new_card_health" value="{{ card.health }}">
+                            <label>체력</label>
+                        </div>
+                        <div class="form-row" style="margin-top: 20px;">
+                            <input type="submit" value="저장">
+                            <input type="reset" value="초기화">
+                        </div>
+                    </div>
+                </div>
+
+
+            </form>
+
+            <script src="/static/javascript/card.js"></script>
+            {% endif %}
+
+        </main>
+
+        <aside class="right"></aside>
+
+    </div>
+
+    <footer></footer>
+
+</body>
+
+</html>

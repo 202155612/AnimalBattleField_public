@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>리플레이</title>
+    <link rel="stylesheet" href="/static/css/layout.css">
+    <style>
+        .replay-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .board {
+            border: 2px solid #000;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            width: 820px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            box-sizing: border-box;
+            align-items: center;
+        }
+
+        .row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            display: inline-block;
+        }
+
+        .bottom-row {
+            display: flex;
+            gap: 20px;
+            width: 820px;
+            box-sizing: border-box;
+        }
+
+        .log-box {
+            flex: 2;
+            border: 2px solid #000;
+            height: 150px;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .controls {
+            flex: 1;
+            border: 2px solid #000;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .controls input[type="range"] {
+            width: 100%;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-buttons button {
+            flex: 1;
+            padding: 8px 0;
+            border: 2px solid #000;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .control-buttons button:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="/home">
+        <img src="/static/images/templates/logo.png" alt="logo" class="logo">
+    </a>
+</header>
+
+<div class="layout">
+
+    <aside class="left"></aside>
+
+    <main>
+        <div class="replay-wrapper">
+            <div class="board">
+                <div class="row">
+                    <div class="card" id="card_2_1">
+                        <card-image
+                            card='{{ replay.player2_cards[0].card_with_last_patch.card | tojson }}'
+                            size="1"
+                        ></card-image>
+                    </div>
+                    <div class="card" id="card_2_2">
+                        <card-image
+                            card='{{ replay.player2_cards[1].card_with_last_patch.card | tojson }}'
+                            size="1"
+                        ></card-image>
+                    </div>
+                    <div class="card" id="card_2_3">
+                        <card-image
+                            card='{{ replay.player2_cards[2].card_with_last_patch.card | tojson }}'
+                            size="1"
+                        ></card-image>
+                    </div>
+                    <div class="card" id="card_2_4">
+                        <card-image
+                            card='{{ replay.player2_cards[3].card_with_last_patch.card | tojson }}'
+                            size="1"
+                        ></card-image>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="card" id="card_1_1">
+                        <card-image
+                            card='{{ replay.player1_cards[0].card_with_last_patch.card | tojson }}'
+                            size="1"
+                        ></card-image>
+                    </div>
+                    <div class="card" id="card_1_2">
+                        <card-image
+                            card='{{ replay.player1_cards[1].card_with_last_patch.card | tojson }}'
+                            size="1"
+                        ></card-image>
+                    </div>
+                    <div class="card" id="card_1_3">
+                        <card-image
+                            card='{{ replay.player1_cards[2].card_with_last_patch.card | tojson }}'
+                            size="1"
+                        ></card-image>
+                    </div>
+                    <div class="card" id="card_1_4">
+                        <card-image
+                            card='{{ replay.player1_cards[3].card_with_last_patch.card | tojson }}'
+                            size="1"
+                        ></card-image>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-row">
+                <div class="log-box">
+                    <p id="log_p"></p>
+                </div>
+
+                <div class="controls">
+                    <input id="control-bar" type="range" min="0" max="{{ replay.actions | length - 1 }}" value="0">
+                    <div class="control-buttons">
+                        <button id="control-left">&lt;</button>
+                        <button id="control-play">■</button>
+                        <button id="control-right">&gt;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="static/javascript/card.js"></script>
+        <script src="static/javascript/replay.js"
+                data-replay='{{ replay | tojson }}'>
+        </script>
+    </main>
+
+    <aside class="right"></aside>
+
+</div>
+
+<footer></footer>
+
+</body>
+</html>

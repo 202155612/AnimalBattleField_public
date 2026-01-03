@@ -1,0 +1,61 @@
+Accounts(user_ID, username, nickname, created_at)
+Notifications(notification_ID, user_ID, message, is_read, created_at)
+Cards(card_ID, name, description, cost, attack, health, image_file, is_active)
+Abilities(ability_ID, name, description, image_file)
+Card_Abilities(card_ID, ability_ID)
+Decks(deck_ID, name, user_ID, is_complete, is_defense_deck)
+DeckCards(deck_ID, slot, card_ID)
+CardPatches(patch_ID, card_ID, before, after, changed_at, patch_user_ID)
+Matches(match_ID, player1_ID, player2_ID, winner_player_side, last_patch_ID, matched_at)
+MatchStates(state_ID, match_ID, state_num, turn)
+MatchActions(action_ID, match_ID, action_num, turn, attack_side, attack_slot, target_slot, attacker_damage, target_damage, is_attacker_alive, is_target_alive, before_state_ID, after_state_ID)
+MatchCards(match_ID, side, slot, card_ID, last_patch_ID)
+MatchStateCards(state_ID, side, slot, card_ID, attack, health, is_dead)
+
+비로그인(guest):
+계정 생성, 카드 능력 조회, 카드 조회, 매치 조회
+Insert: Accounts(username, nickname)
+
+로그인(player):
+플레이, 덱 조회 및 생성, 알림
+Insert:
+Notifications(user_ID, message)
+Decks(name, user_ID, is_complete, is_defense_deck)
+DeckCards(deck_ID, slot, card_ID)
+Matches(player1_ID, player2_ID, winner_player_side, last_patch_ID)
+MatchStates(match_ID, state_num, turn)
+MatchActions(match_ID, action_num, turn, attack_side, attack_slot, target_slot, attacker_damage, target_damage, is_attacker_alive, is_target_alive, before_state_ID, after_state_ID)
+MatchCards(match_ID, side, slot, card_ID, last_patch_ID)
+MatchStateCards(state_ID, side, slot, card_ID, attack, health, is_dead)
+
+Update: 
+Notifications(is_read)
+Accounts(nickname) (자신만)
+DeckCards(card_ID)
+
+Delete:
+Decks
+DeckCards
+
+개발자(developer):
+카드 정보 수정
+Insert:
+Cards(name, description, cost, attack, health, image_file, is_active)
+Card_Abilities(card_ID, ability_ID)
+Abilities(name, description, image_file)
+CardPatches(card_ID, before, after, changed_at, patch_user_ID)
+
+Update:
+Cards(name, description, cost, attack, health, image_file, is_active)
+Abilities(name, description, image_file)
+Decks(is_complete, is_defense_deck)
+
+Delete:
+Cards
+Card_Abilities
+Abilities
+
+관리자(administrator):
+계정 관리
+Update:
+Accounts(nickname) (전원)

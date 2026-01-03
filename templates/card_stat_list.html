@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>카드 통계 목록</title>
+    <link rel="stylesheet" href="/static/css/layout.css">
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="/home">
+        <img src="/static/images/templates/logo.png" alt="logo" class="logo">
+    </a>
+</header>
+
+<div class="layout">
+
+    <aside class="left"></aside>
+
+    <main>
+        {% if error_message %}
+            <p style="color:red;">{{ error_message }}</p>
+        {% endif %}
+
+        <div id="card_stat_container"></div>
+    </main>
+
+    <aside class="right"></aside>
+
+</div>
+
+<footer></footer>
+
+<script src="/static/javascript/card_stat_list.js"
+        data-card-stats='{{ card_stats | tojson }}'></script>
+
+</body>
+</html>

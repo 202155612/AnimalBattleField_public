@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>덱 생성</title>
+    <link rel="stylesheet" href="/static/css/layout.css">
+</head>
+
+<body>
+
+<header>
+    <a href="/home">
+        <img src="/static/images/templates/logo.png" alt="logo" class="logo">
+    </a>
+</header>
+
+<div class="layout">
+
+    <aside class="left"></aside>
+
+    <main>
+        <h1>덱 생성</h1>
+
+        <form method="post">
+            <label>덱 이름</label><br>
+            <input name="deck_name"><br><br>
+
+            <button type="submit">생성</button>
+            <button type="reset">취소</button>
+        </form>
+
+        {% if error_message %}
+            <p style="color: red;">{{ error_message }}</p>
+        {% endif %}
+    </main>
+
+    <aside class="right"></aside>
+
+</div>
+
+<footer></footer>
+
+</body>
+</html>

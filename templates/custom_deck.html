@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>덱 수정</title>
+    <link rel="stylesheet" href="/static/css/layout.css">
+    <style>
+        .item {
+            background: #ddd;
+            padding: 20px;
+            display: inline-flex;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .emptyitem {
+            width: 160px;
+            height: 240px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+        }
+
+        .carditem {
+            background: #ddd;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .selected-slot {
+            outline: 3px solid blue;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="/home">
+        <img src="/static/images/templates/logo.png" alt="logo" class="logo">
+    </a>
+</header>
+
+<div class="layout">
+
+    <aside class="left"></aside>
+
+    <main>
+        {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+        {% endif %}
+
+        <h2>{{ deck.name }}</h2>
+        <h3>
+        {% if deck.is_defense_deck %}
+        방어덱
+        {% elif deck.is_complete %}
+        완성됨
+        {% else %}
+        미완성
+        {% endif %}
+        </h3>
+
+        <div id="deck-slots">
+            {% for card in deck.cards %}
+                {% if card is not none %}
+                <div class="item slot"
+                     data-slot-index="{{ loop.index0 }}"
+                     data-card-id="{{ card.card_id }}">
+                    <card-image
+                        card='{{ card | tojson }}'
+                        size="1"
+                    ></card-image>
+                </div>
+                {% else %}
+                <div class="item slot"
+                     data-slot-index="{{ loop.index0 }}"
+                     data-card-id="">
+                    <div class="emptyitem"></div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <form method="post" action="{{ url_for('deck.update_name', deck_id=deck.deck_id) }}">
+            <h2>덱 이름 수정</h2>
+            <input name="deck_name" value="{{ deck.name }}">
+            <button type="submit">수정</button>
+        </form>    
+        
+        <form method="post" action="{{ url_for('deck.update_status', deck_id=deck.deck_id) }}">
+            <h2>덱 상태</h2>
+            <input type="radio" name="deck_complete" value="not_complete" 
+            {% if not deck.is_complete and not deck.is_defense_deck %} checked {% endif %}>미완성
+            <input type="radio" name="deck_complete" value="complete"
+            {% if deck.is_complete and not deck.is_defense_deck %} checked {% endif %}>완성
+            <input type="radio" name="deck_complete" value="defense_deck"
+            {% if deck.is_defense_deck %} checked {% endif %}>방어용
+
+            <input type="hidden" name="card_ids_json" id="card_ids_json">
+
+            <button type="submit">수정</button>
+        </form>    
+
+        {% if cards and cards|length > 0 %}
+        <div class="container">
+            {% for card in cards %}
+            <div class="carditem selectable-card"
+                 data-card-id="{{ card.card_id }}">
+                <card-image
+                    card='{{ card | tojson }}'
+                    size="1"
+                ></card-image>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </main>
+
+    <aside class="right"></aside>
+
+</div>
+
+<footer></footer>
+
+<script src="static/javascript/card.js"></script>
+<script>
+const slots = document.querySelectorAll('.slot');
+const cards = document.querySelectorAll('.selectable-card');
+const hiddenInput = document.getElementById('card_ids_json');
+let selectedSlot = null;
+
+function updateHiddenInput() {
+    const result = [];
+    slots.forEach(slot => {
+        const id = slot.dataset.cardId;
+        if (id === "" || id === undefined) {
+            result.push(null);
+        } else {
+            result.push(parseInt(id, 10));
+        }
+    });
+    hiddenInput.value = JSON.stringify(result);
+}
+
+slots.forEach(slot => {
+    slot.addEventListener('click', () => {
+        if (selectedSlot) {
+            selectedSlot.classList.remove('selected-slot');
+        }
+        selectedSlot = slot;
+        slot.classList.add('selected-slot');
+    });
+});
+
+cards.forEach(card => {
+    card.addEventListener('click', () => {
+        if (!selectedSlot) {
+            return;
+        }
+        const cardId = card.dataset.cardId;
+        selectedSlot.dataset.cardId = cardId;
+
+        const image = card.querySelector('card-image').cloneNode(true);
+        selectedSlot.innerHTML = "";
+        selectedSlot.appendChild(image);
+
+        updateHiddenInput();
+
+        selectedSlot.classList.remove('selected-slot');
+        selectedSlot = null;
+    });
+});
+
+updateHiddenInput();
+</script>
+
+</body>
+</html>

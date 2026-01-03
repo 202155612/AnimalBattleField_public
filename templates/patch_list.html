@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>카드 패치 목록</title>
+    <link rel="stylesheet" href="/static/css/layout.css">
+    <style>
+        .outer {
+            border: 2px solid #000;
+            background: #c7e93f;
+            padding: 32px;
+            width: fit-content;
+            margin: 40px auto;
+        }
+
+        .inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            column-gap: 40px;
+        }
+
+        .center-text {
+            width: 160px;
+            height: 240px;
+            border: 2px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="/home">
+        <img src="/static/images/templates/logo.png" alt="logo" class="logo">
+    </a>
+</header>
+
+<div class="layout">
+
+    <aside class="left"></aside>
+
+    <main>
+        {% if error_message %}
+            <p style="color: red;">{{ error_message }}</p>
+        {% endif %}
+
+        <form method="GET">
+            <label>검색할 카드 ID: </label>
+            <input id="card_id" name="card_id">
+            <input type="submit">
+        </form>
+
+        {% if patches and patches|length > 0 %}
+            {% for patch in patches %}
+            <div class="outer">
+                <div class="inner">
+                    <card-image
+                        card='{{ patch.before | tojson }}'
+                        size="1"
+                    ></card-image>
+
+                    <div class="center-text">{{ patch.diff_text | safe }}</div>
+
+                    <card-image
+                        card='{{ patch.after | tojson }}'
+                        size="1"
+                    ></card-image>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </main>
+
+    <aside class="right"></aside>
+
+</div>
+
+<footer></footer>
+
+<script src="static/javascript/card.js"></script>
+</body>
+</html>
