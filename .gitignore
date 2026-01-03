@@ -9,3 +9,4 @@ examples/
 .DS_Store
 logs/
 flask_session/
+idea/
